@@ -1,5 +1,19 @@
 package models
 
+type VaultStatus struct {
+	Success bool `json:"success"`
+	Data    struct {
+		Object   string `json:"object"`
+		Template struct {
+			ServerURL string `json:"serverUrl"`
+			LastSync  string `json:"lastSync"`
+			UserEmail string `json:"userEmail"`
+			UserID    string `json:"userId"`
+			Status    string `json:"status"`
+		} `json:"template"`
+	} `json:"data"`
+}
+
 type UnlockRequest struct {
 	Password string `json:"password"`
 }

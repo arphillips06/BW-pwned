@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -26,7 +27,7 @@ func StringSplitter(hash string) (prefix, suffix string) {
 	return prefix, suffix
 }
 
-func GetPwned(prefix string) {
+func GetPwned(prefix string) string {
 	url := fmt.Sprintf("https://api.pwnedpasswords.com/range/%s", prefix)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -37,8 +38,29 @@ func GetPwned(prefix string) {
 	if err != nil {
 		log.Fatalf("Failed to read response: %v", err)
 	}
+	return string(body)
+}
+
+func FindSuffixCount(suffix string, body string) int {
 	lines := strings.Split(string(body), "\n")
-	for i := 0; i < 10; i++ {
-		fmt.Println(lines[i])
+	for _, line := range lines {
+		s := strings.Split(line, ":")
+		if len(s) == 2 {
+			hash := strings.Trim(s[0], " '\r\n")
+			count := strings.TrimSpace(s[1])
+			if hash == suffix {
+				num, _ := strconv.Atoi(count)
+				return num
+			}
+		}
 	}
+	return 0
+}
+
+func CheckPassword(password string) int {
+	sha := ShaPassword(password)
+	prefix, suffix := StringSplitter(sha)
+	body := GetPwned(prefix)
+	getCount := FindSuffixCount(suffix, body)
+	return getCount
 }

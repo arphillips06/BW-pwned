@@ -2,26 +2,19 @@ package bitwarden
 
 import (
 	"bw-hibp-check/helper"
+	"bw-hibp-check/hibp"
 	"bw-hibp-check/models"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 )
 
-func GetStatus() {
-	resp, err := http.Get("http://localhost:8087/status")
+func GetStatus() (*models.VaultStatus, error) {
+	var resp models.VaultStatus
+	err := helper.DoRequest("GET", "http://localhost:8087/status", nil, &resp)
 	if err != nil {
-		log.Fatalf("Failed to get status: %v", err)
+		return nil, err
 	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalf("Failed to read response: %v", err)
-	}
-
-	fmt.Println("Response:", string(body))
+	return &resp, nil
 }
 
 func UnlockVault(password string) (*models.UnlockResponse, error) {
@@ -58,10 +51,15 @@ func ListAllItems() (*models.BitwardenItemsListResponse, error) {
 			continue
 		}
 		name := item.Login.URIs[0]
-		fmt.Printf("Account name: %s \n", name.URI)
-		fmt.Printf("Username: %s \n", item.Login.Username)
-		fmt.Printf("Password: %s \n", item.Login.Password)
-		fmt.Printf("\n")
+		c := hibp.CheckPassword(item.Login.Password)
+		if c > 0 {
+			fmt.Printf("BREACHED \n")
+			fmt.Printf("Account name: %s\n", name.URI)
+			fmt.Printf("Username: %s\n", item.Login.Username)
+			fmt.Printf("Password: %s\n", item.Login.Password)
+			fmt.Printf("Seen in breaches %d times\n", c)
+			fmt.Println()
+		}
 	}
 	return &resp, nil
 }
