@@ -9,7 +9,11 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 )
+
+var hibpCacheMap = map[string]string{}
+var hibpCacheMutex sync.Mutex
 
 func ShaPassword(password string) string {
 	hash := sha1.New()
