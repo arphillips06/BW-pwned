@@ -25,6 +25,8 @@ Details on how to use this can be found on that site, as a quick run down on Win
 - (Optional) Verify login status
     - `.\bw.eve status`
 
+If items are added to the vault and you wish to check again then you must run `.\bw.exe sync` to update the BW API.
+
 
 Building is optional — the app can be run directly:
 
