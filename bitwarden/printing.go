@@ -71,14 +71,8 @@ func printTable(results []models.Result, breachedCount, safeCount int) {
 }
 
 func printResults(results []models.Result) {
-	fmt.Println("Show passwords in output? (y/n): ")
-	var choice string
-	fmt.Scanln(&choice)
-	showPw := strings.ToLower(choice) == "y"
-	fmt.Print("Show table view (y/n): ")
-	var table string
-	fmt.Scanln(&table)
-	tableView := strings.ToLower(table) == "y"
+	showPw := helper.PromptYesNo("Show passwords in output? (y/n): ")
+	tableView := helper.PromptYesNo("Show table view (y/n): ")
 	breachedCount := 0
 	safeCount := 0
 	for _, r := range results {
@@ -107,6 +101,5 @@ func printResults(results []models.Result) {
 		fmt.Printf("%sBreaches:%s  %s%d%s\n", helper.Bold, helper.Reset, helper.Yellow, r.PwnedCount, helper.Reset)
 		fmt.Println()
 	}
-
 	printSummary(breachedCount, safeCount)
 }
