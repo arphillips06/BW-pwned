@@ -9,8 +9,8 @@ import (
 
 func runWorkerPool(jobs []models.Job) []models.Result {
 	const numWorkers = 20
-	jobChan := make(chan models.Job, numWorkers)
-	resultChan := make(chan models.Result, numWorkers)
+	jobChan := make(chan models.Job)
+	resultChan := make(chan models.Result)
 	var wg sync.WaitGroup
 	wg.Add(numWorkers)
 	for i := range numWorkers {
@@ -34,10 +34,12 @@ func runWorkerPool(jobs []models.Job) []models.Result {
 			}
 		}(workerID)
 	}
-	for _, j := range jobs {
-		jobChan <- j
-	}
-	close(jobChan)
+	go func() {
+		for _, j := range jobs {
+			jobChan <- j
+		}
+		close(jobChan)
+	}()
 	go func() {
 		wg.Wait()
 		close(resultChan)
