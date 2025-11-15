@@ -8,17 +8,18 @@ import (
 )
 
 func runWorkerPool(jobs []models.Job) []models.Result {
-	jobChan := make(chan models.Job)
-	resultChan := make(chan models.Result)
 	const numWorkers = 20
-	wg := &sync.WaitGroup{}
+	jobChan := make(chan models.Job, numWorkers)
+	resultChan := make(chan models.Result, numWorkers)
+	var wg sync.WaitGroup
 	wg.Add(numWorkers)
 	for i := range numWorkers {
-		go func(workerID int) {
+		workerID := fmt.Sprintf("worker-%d", i)
+		go func(id string) {
+			defer wg.Done()
 			for job := range jobChan {
 				hash, prefix, suffix, count := hibp.CheckPassword(job.Password)
-
-				result := models.Result{
+				resultChan <- models.Result{
 					Username:   job.Username,
 					URI:        job.URI,
 					ItemName:   job.ItemName,
@@ -28,29 +29,22 @@ func runWorkerPool(jobs []models.Job) []models.Result {
 					Suffix:     suffix,
 					Hash:       hash,
 					Pwned:      count > 0,
-					WorkerID:   fmt.Sprintf("worker-%d", workerID),
+					WorkerID:   id,
 				}
-				resultChan <- result
 			}
-			wg.Done()
-		}(i)
+		}(workerID)
 	}
-	var all []models.Result
-	done := make(chan struct{})
+	for _, j := range jobs {
+		jobChan <- j
+	}
+	close(jobChan)
 	go func() {
-		for r := range resultChan {
-			all = append(all, r)
-		}
-		close(done)
+		wg.Wait()
+		close(resultChan)
 	}()
-	go func() {
-		for _, j := range jobs {
-			jobChan <- j
-		}
-		close(jobChan)
-	}()
-	wg.Wait()
-	close(resultChan)
-	<-done
-	return all
+	var results []models.Result
+	for r := range resultChan {
+		results = append(results, r)
+	}
+	return results
 }
