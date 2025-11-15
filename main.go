@@ -2,6 +2,7 @@ package main
 
 import (
 	"bw-hibp-check/bitwarden"
+	"bw-hibp-check/helper"
 	"fmt"
 )
 
@@ -10,10 +11,7 @@ func promptMenu() int {
 	fmt.Println("  1. Check status")
 	fmt.Println("  2. Get single item")
 	fmt.Println("  3. List all items")
-	fmt.Print("Choose an option [1-3]: ")
-	var choice int
-	fmt.Scanln(&choice)
-	return choice
+	return helper.PromptInt("Choose an option [1-3]: ")
 }
 
 func main() {
