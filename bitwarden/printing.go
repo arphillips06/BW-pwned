@@ -4,68 +4,68 @@ import (
 	"bw-hibp-check/helper"
 	"bw-hibp-check/models"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
 func printSummary(breached, safe int) {
 	total := breached + safe
-
 	fmt.Println("================================")
 	fmt.Printf("%sScan Summary%s\n", helper.Bold, helper.Reset)
 	fmt.Println("================================")
-	fmt.Printf("%sSAFE:%s      %s%d%s\n", helper.Bold, helper.Reset, helper.Green, safe, helper.Reset)
-	fmt.Printf("%sBREACHED:%s  %s%d%s\n", helper.Bold, helper.Reset, helper.Red, breached, helper.Reset)
-	fmt.Printf("%sTOTAL:%s     %s%d%s\n", helper.Bold, helper.Reset, helper.Cyan, total, helper.Reset)
+	fmt.Printf("%sSAFE:%s      %s%d%s\n",
+		helper.Bold, helper.Reset, helper.Green, safe, helper.Reset)
+	fmt.Printf("%sBREACHED:%s  %s%d%s\n",
+		helper.Bold, helper.Reset, helper.Red, breached, helper.Reset)
+	fmt.Printf("%sTOTAL:%s     %s%d%s\n",
+		helper.Bold, helper.Reset, helper.Cyan, total, helper.Reset)
 	fmt.Println("===============================")
 }
 
 func printTable(results []models.Result, breachedCount, safeCount int) {
-	maxURI := 0
-	maxUser := 0
-	maxBreaches := 0
-
+	maxURI := len("URI")
+	maxUser := len("USERNAME")
+	maxBreach := len("BREACHES")
 	for _, r := range results {
 		if !r.Pwned {
 			continue
 		}
-		maxURI = max(maxURI, len(r.URI))
-		maxUser = max(maxUser, len(r.Username))
-		maxBreaches = max(maxBreaches, len(fmt.Sprintf("%d", r.PwnedCount)))
+		if len(r.URI) > maxURI {
+			maxURI = len(r.URI)
+		}
+		if len(r.Username) > maxUser {
+			maxUser = len(r.Username)
+		}
+		b := len(strconv.Itoa(int(r.PwnedCount)))
+		if b > maxBreach {
+			maxBreach = b
+		}
 	}
-
-	statusWidth := max(len("STATUS"), len("BREACHED")) + 2
-	uriWidth := max(len("URI"), maxURI) + 2
-	userWidth := max(len("USERNAME"), maxUser) + 2
-	breachWidth := max(len("BREACHES"), maxBreaches) + 2
-
-	header :=
-		helper.PadANSI(helper.Bold+"STATUS"+helper.Reset, statusWidth) +
-			helper.PadANSI(helper.Bold+"URI"+helper.Reset, uriWidth) +
-			helper.PadANSI(helper.Bold+"USERNAME"+helper.Reset, userWidth) +
-			helper.PadANSI(helper.Bold+"BREACHES"+helper.Reset, breachWidth)
-
+	statusWidth := len("BREACHED") + 2
+	uriWidth := maxURI + 2
+	userWidth := maxUser + 2
+	breachWidth := maxBreach + 2
+	header := ""
+	header += helper.PadANSI(helper.Bold+"STATUS"+helper.Reset, statusWidth)
+	header += helper.PadANSI(helper.Bold+"URI"+helper.Reset, uriWidth)
+	header += helper.PadANSI(helper.Bold+"USERNAME"+helper.Reset, userWidth)
+	header += helper.PadANSI(helper.Bold+"BREACHES"+helper.Reset, breachWidth)
 	fmt.Println(header)
-
 	sepLen := statusWidth + uriWidth + userWidth + breachWidth
 	fmt.Println(strings.Repeat("-", sepLen))
-
 	for _, r := range results {
 		if !r.Pwned {
 			continue
 		}
-
 		status := helper.Red + "BREACHED" + helper.Reset
-		breaches := helper.Yellow + fmt.Sprintf("%d", r.PwnedCount) + helper.Reset
-
-		fmt.Print(
+		breaches := helper.Yellow + strconv.Itoa(int(r.PwnedCount)) + helper.Reset
+		fmt.Println(
 			helper.PadANSI(status, statusWidth) +
 				helper.PadANSI(r.URI, uriWidth) +
 				helper.PadANSI(r.Username, userWidth) +
 				helper.PadANSI(breaches, breachWidth),
 		)
-		fmt.Println()
 	}
-
 	fmt.Println()
 	printSummary(breachedCount, safeCount)
 }
@@ -98,7 +98,8 @@ func printResults(results []models.Result) {
 		fmt.Printf("%sAccount:%s   %s\n", helper.Bold, helper.Reset, r.URI)
 		fmt.Printf("%sUsername:%s  %s\n", helper.Bold, helper.Reset, r.Username)
 		fmt.Printf("%sPassword:%s  %s\n", helper.Bold, helper.Reset, pw)
-		fmt.Printf("%sBreaches:%s  %s%d%s\n", helper.Bold, helper.Reset, helper.Yellow, r.PwnedCount, helper.Reset)
+		fmt.Printf("%sBreaches:%s  %s%d%s\n",
+			helper.Bold, helper.Reset, helper.Yellow, r.PwnedCount, helper.Reset)
 		fmt.Println()
 	}
 	printSummary(breachedCount, safeCount)

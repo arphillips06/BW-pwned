@@ -7,21 +7,23 @@ import (
 	"log"
 )
 
+const bwBaseURL = "http://localhost:8087"
+
 func GetStatus() (*models.VaultStatus, error) {
 	var resp models.VaultStatus
-	err := helper.DoRequest("GET", "http://localhost:8087/status", nil, &resp)
-	if err != nil {
-		return nil, err
+	url := bwBaseURL + "/status"
+	if err := helper.DoRequest("GET", url, nil, &resp); err != nil {
+		return nil, fmt.Errorf("status request failed: %w", err)
 	}
 	return &resp, nil
 }
 
 func UnlockVault(password string) (*models.UnlockResponse, error) {
 	var resp models.UnlockResponse
-	err := helper.DoRequest("POST", "http://localhost:8087/unlock",
-		models.UnlockRequest{Password: password}, &resp)
-	if err != nil {
-		return nil, err
+	url := bwBaseURL + "/unlock"
+	body := models.UnlockRequest{Password: password}
+	if err := helper.DoRequest("POST", url, body, &resp); err != nil {
+		return nil, fmt.Errorf("unlock vault failed: %w", err)
 	}
 	log.Printf("Unlocked: %v | Message: %s", resp.Success, resp.Data.Title)
 	return &resp, nil
@@ -29,9 +31,9 @@ func UnlockVault(password string) (*models.UnlockResponse, error) {
 
 func GetItem(id string) (*models.BitwardenItemResponse, error) {
 	var resp models.BitwardenItemResponse
-	url := fmt.Sprintf("http://localhost:8087/object/item/%s", id)
+	url := bwBaseURL + "/object/item/" + id
 	if err := helper.DoRequest("GET", url, nil, &resp); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("get item %s failed: %w", id, err)
 	}
 	return &resp, nil
 }
