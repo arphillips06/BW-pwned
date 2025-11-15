@@ -36,11 +36,9 @@ func GetPwned(prefix string) string {
 	value, ok := hibpCacheMap[prefix]
 	if ok {
 		hibpCacheMutex.Unlock()
-		fmt.Println("cache hit")
 		return value
 	}
 	hibpCacheMutex.Unlock()
-	fmt.Println("FETCHING FROM API:", prefix)
 	url := fmt.Sprintf("https://api.pwnedpasswords.com/range/%s", prefix)
 	resp, err := http.Get(url)
 	if err != nil {
