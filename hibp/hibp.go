@@ -74,10 +74,10 @@ func FindSuffixCount(suffix string, body string) int {
 	return 0
 }
 
-func CheckPassword(password string) int {
+func CheckPassword(password string) (hash, prefix, suffix string, count int) {
 	sha := ShaPassword(password)
-	prefix, suffix := StringSplitter(sha)
+	prefix, suffix = StringSplitter(sha)
 	body := GetPwned(prefix)
 	getCount := FindSuffixCount(suffix, body)
-	return getCount
+	return sha, prefix, suffix, getCount
 }

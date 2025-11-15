@@ -82,3 +82,10 @@ type BitwardenItemsWrapper struct {
 	Object string          `json:"object"`
 	Data   []BitwardenItem `json:"data"`
 }
+
+type Job struct {
+	Password string
+	Username string
+	URI      string
+	ItemName string
+}
