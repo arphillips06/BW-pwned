@@ -6,6 +6,7 @@ This project interacts with the bitwarden and haveibeenpwned APIs to automatical
 ### Prereqresites
 - BW CLI
 - Go version go1.24.4 (tested)
+    - once installed, navigate to this folder and run `go mod init` && `go mod tidy` to init Go and get required modules.
 - Internet access (required for the HIBP API)
 
 ### use 
