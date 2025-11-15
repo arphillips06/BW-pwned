@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -31,29 +30,29 @@ func StringSplitter(hash string) (prefix, suffix string) {
 	return prefix, suffix
 }
 
-func GetPwned(prefix string) string {
+func GetPwned(prefix string) (string, error) {
 	hibpCacheMutex.Lock()
 	value, ok := hibpCacheMap[prefix]
 	if ok {
 		hibpCacheMutex.Unlock()
-		return value
+		return value, nil
 	}
 	hibpCacheMutex.Unlock()
 	url := fmt.Sprintf("https://api.pwnedpasswords.com/range/%s", prefix)
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("Failed to get status: %v", err)
+		return "", err
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalf("Failed to read response: %v", err)
+		return "", err
 	}
 	sbody := string(body)
 	hibpCacheMutex.Lock()
 	hibpCacheMap[prefix] = sbody
 	hibpCacheMutex.Unlock()
-	return sbody
+	return sbody, nil
 }
 
 func FindSuffixCount(suffix string, body string) int {
@@ -75,7 +74,11 @@ func FindSuffixCount(suffix string, body string) int {
 func CheckPassword(password string) (hash, prefix, suffix string, count int) {
 	sha := ShaPassword(password)
 	prefix, suffix = StringSplitter(sha)
-	body := GetPwned(prefix)
+	body, err := GetPwned(prefix)
+	if err != nil {
+		fmt.Printf("WARN: HIBP lookup failed for prefix %s (%v) — treating as zero\n", prefix, err)
+		body = ""
+	}
 	getCount := FindSuffixCount(suffix, body)
 	return sha, prefix, suffix, getCount
 }
