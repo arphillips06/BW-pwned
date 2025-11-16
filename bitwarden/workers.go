@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/arphillips06/BW-pwned/hibp"
-	"github.com/arphillips06/BW-pwned/models"
+	"github.com/arphillips06/bw-pwned/hibp"
+	"github.com/arphillips06/bw-pwned/models"
 )
 
 func runWorkerPool(jobs []models.Job) []models.Result {

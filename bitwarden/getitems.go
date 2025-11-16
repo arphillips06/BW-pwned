@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/arphillips06/BW-pwned/helper"
+	"github.com/arphillips06/bw-pwned/helper"
 )
 
 func ensureVaultUnlocked() {

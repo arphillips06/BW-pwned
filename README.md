@@ -1,6 +1,6 @@
-# BW-pwned
+# bw-pwned
 
-BW-pwned checks the passwords in your Bitwarden vault against the **Have I Been Pwned** (HIBP) *Pwned Passwords* database using the anonymous **k-anonymous range API**.  
+bw-pwned checks the passwords in your Bitwarden vault against the **Have I Been Pwned** (HIBP) *Pwned Passwords* database using the anonymous **k-anonymous range API**.  
 No passwords are ever sent over the network — only hashed prefixes.
 
 ## Features

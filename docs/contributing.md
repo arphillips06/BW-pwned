@@ -1,4 +1,4 @@
-# Contributing to BW-pwned
+# Contributing to bw-pwned
 
 Thanks for your interest in contributing! Even small improvements — fixing typos, cleaning up error messages, simplifying functions — are welcome.
 
@@ -82,4 +82,4 @@ Feature requests should describe the problem or use case.
 
 ## Thank You
 
-BW-pwned is a small project, and contributions genuinely help keep it improving. Thank you for taking the time to contribute!
+bw-pwned is a small project, and contributions genuinely help keep it improving. Thank you for taking the time to contribute!

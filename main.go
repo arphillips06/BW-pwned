@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/arphillips06/BW-pwned/bitwarden"
-	"github.com/arphillips06/BW-pwned/helper"
+	"github.com/arphillips06/bw-pwned/bitwarden"
+	"github.com/arphillips06/bw-pwned/helper"
 )
 
 func promptMenu() int {

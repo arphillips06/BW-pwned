@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/arphillips06/BW-pwned/helper"
-	"github.com/arphillips06/BW-pwned/models"
+	"github.com/arphillips06/bw-pwned/helper"
+	"github.com/arphillips06/bw-pwned/models"
 )
 
 const bwBaseURL = "http://localhost:8087"

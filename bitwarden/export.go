@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/arphillips06/BW-pwned/helper"
-	"github.com/arphillips06/BW-pwned/models"
+	"github.com/arphillips06/bw-pwned/helper"
+	"github.com/arphillips06/bw-pwned/models"
 )
 
 func ensureExportDir() {

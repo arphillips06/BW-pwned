@@ -1,6 +1,6 @@
-# Design Overview – BW-pwned
+# Design Overview – bw-pwned
 
-This document explains how BW-pwned works under the hood: data flow, architecture, and design choices.
+This document explains how bw-pwned works under the hood: data flow, architecture, and design choices.
 
 ## 1. High-level flow
 
@@ -40,7 +40,7 @@ hash → prefix/suffix → API fetch → suffix match → result return.
 
 ## 4. Caching
 
-BW-pwned caches **prefix responses** from the HIBP range API.
+bw-pwned caches **prefix responses** from the HIBP range API.
 
 Many different passwords can share the same first 5 SHA‑1 characters, so the tool:
 
