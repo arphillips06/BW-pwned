@@ -74,7 +74,7 @@ go install github.com/arphillips06/bw-pwned@latest
 
 This places the binary in:
 
-- **Windows:** `%USERPROFILE%\go\bin`\
+- **Windows:** `%USERPROFILE%\go\bin\`
 
 Then run:
 
