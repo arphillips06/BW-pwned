@@ -25,6 +25,7 @@ Download: [Bitwarden CLI](https://bitwarden.com/help/cli/#get)
 ### **Go 1.24.x or newer**
 
 Required for module installation and compiling from source.
+[Go Install](https://go.dev/doc/install)
 
 ### **Internet access**
 
