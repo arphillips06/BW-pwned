@@ -18,15 +18,17 @@ No passwords are ever sent over the network — only hashed prefixes.
 
 ## Prerequisites
 
-- **Bitwarden CLI**  
-  Download: [Bitwarden CLI](https://bitwarden.com/help/cli/#get)
-- **Go 1.24.x** (tested)
-After cloning this repo:  
+### **Bitwarden CLI**
 
-  ```sh
-  go mod init bw-hibp-check
-  go mod tidy
-  ```
+Download: [Bitwarden CLI](https://bitwarden.com/help/cli/#get)
+
+### **Go 1.24.x or newer**
+
+Required for module installation and compiling from source.
+
+### **Internet access**
+
+Needed for HIBP lookups.
 
 - **Internet access** (for HIBP lookups)
 
@@ -57,22 +59,36 @@ On Windows:
    .\bw.exe sync
    ```
 
-## Running the app
+## Installation Options
 
-No need to build — just run it:
+You can use **either**:
 
-```sh
-go run .
+### **1. Install directly**
+
+Requires **Go 1.24.x** or newer:
+
+``` sh
+go install github.com/arphillips06/bw-pwned@latest
 ```
 
-You should see:
+This places the binary in:
 
-```sh
-Bitwarden → HIBP checker starting...
-1. Check status
-2. Get single item
-3. List all items
-Choose an option [1-3]:
+- **Windows:** `%USERPROFILE%\go\bin`\
+
+Then run:
+
+``` sh
+bw-pwned
+```
+
+------------------------------------------------------------------------
+
+### **2. Run from source**
+
+``` sh
+git clone https://github.com/arphillips06/bw-pwned
+cd bw-pwned
+go run .
 ```
 
 Follow the on-screen prompts.
