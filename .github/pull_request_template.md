@@ -1,52 +1,35 @@
 # Pull Request
 
 ## Summary
-
-## `<!-- Briefly describe the changes in this PR -->`{=html}
+<!-- Briefly describe the changes in this PR -->
 
 ## What This PR Changes
+<!-- List the key changes, features, or fixes -->
 
-## `<!-- List the key changes, features, or fixes -->`{=html}
-
--
--
+- 
+- 
 
 ## Checklist
+- [ ] The code builds and runs locally  
+- [ ] No linter or formatting issues  
+- [ ] Documentation updated  
+- [ ] No secrets or sensitive data committed  
 
-- [ ] The code builds and runs locally\- [ ] No linter or formatting issues\
-- [ ] Documentation updated\
-- [ ] No secrets or sensitive data committed
+## Expected Result
 
-## Expected result
+## Screenshots / Output (optional)
 
-## 📷 Screenshots / Output (optional)
-
-```{=html}
 <details>
-```
-
-```{=html}
-<summary>
-```
-
-Expand
-
-```{=html}
-</summary>
-```
+<summary>Expand</summary>
 
 Paste logs/output here
 
-```{=html}
 </details>
-```
 
 ## Security Impact
-
-- [ ] No security-impacting changes\
-    or\
+- [ ] No security-impacting changes  
+  **or**  
 - Describe impact:
 
-## 🛠 Related Issues
-
-Closes \#
+## Related Issues
+Closes #
