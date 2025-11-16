@@ -24,7 +24,7 @@ No passwords are ever sent over the network — only hashed prefixes.
 After cloning this repo:  
 
   ```sh
-  go mod init
+  go mod init bw-hibp-check
   go mod tidy
   ```
 
