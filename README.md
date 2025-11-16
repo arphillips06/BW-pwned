@@ -81,7 +81,10 @@ Then run:
 ``` sh
 bw-pwned
 ```
-
+To remove via powershell:
+```sh
+Remove-Item "$env:GOPATH\bin\bw-pwned.exe"
+```
 ------------------------------------------------------------------------
 
 ### **2. Run from source**
